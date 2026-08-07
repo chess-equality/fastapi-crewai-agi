@@ -1,0 +1,49 @@
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.ruff_cache/
+.venv/
+backend/.venv
+node_modules/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+app.egg-info/
+.mypy_cache/
+.pytest_cache/
+
+# Coverage / build
+.coverage
+htmlcov/
+coverage/
+.cache/
+dist/
+build/
+
+# Local env / secrets
+.env.local
+.env.*.local
+*.local
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Agent configuration
+.agents/
+.claude/
+AGENTS.md
+
+# Lock file (regenerate with `uv lock`)
+uv.lock
+backend/app/frontend/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
