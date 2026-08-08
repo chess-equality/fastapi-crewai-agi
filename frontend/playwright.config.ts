@@ -1,5 +1,18 @@
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'node:url';
+import dotenv from 'dotenv';
 import { defineConfig, devices } from '@playwright/test';
-import 'dotenv/config'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Load the environment-specific .env file from the repo root.
+const envName = process.env.ENVIRONMENT || 'local';
+const envPath = path.resolve(__dirname, '..', `.env.${envName}`);
+if (!fs.existsSync(envPath)) {
+  throw new Error(`Missing env file: ${envPath}`);
+}
+dotenv.config({ path: envPath });
 
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:5173'
 

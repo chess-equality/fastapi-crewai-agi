@@ -22,9 +22,13 @@ coverage/
 .cache/
 dist/
 build/
+*.tsbuildinfo
 
 # Local env / secrets
+.env
 .env.local
+.env.staging
+.env.production
 .env.*.local
 *.local
 

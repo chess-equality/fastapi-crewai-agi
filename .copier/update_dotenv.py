@@ -1,14 +1,16 @@
 from pathlib import Path
 import json
 
-# Update the .env file with the answers from the .copier-answers.yml file
-# without using Jinja2 templates in the .env file, this way the code works as is
-# without needing Copier, but if Copier is used, the .env file will be updated
+# Update .env.local with the answers from the .copier-answers.yml file
+# without using Jinja2 templates. .env.example remains the reference template.
 root_path = Path(__file__).parent.parent
 answers_path = Path(__file__).parent / ".copier-answers.yml"
 answers = json.loads(answers_path.read_text())
-env_path = root_path / ".env"
-env_content = env_path.read_text()
+
+template_path = root_path / ".env.example"
+output_path = root_path / ".env.local"
+
+env_content = template_path.read_text()
 lines = []
 for line in env_content.splitlines():
     for key, value in answers.items():
@@ -23,4 +25,4 @@ for line in env_content.splitlines():
             break
     else:
         lines.append(line)
-env_path.write_text("\n".join(lines))
+output_path.write_text("\n".join(lines))

@@ -1,5 +1,7 @@
+import os
 import secrets
 import warnings
+from pathlib import Path
 from typing import Annotated, Any, Literal, Self
 
 from pydantic import (
@@ -14,6 +16,15 @@ from pydantic import (
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
+# Select the active env file from the shell, defaulting to local.
+# We can't read ENVIRONMENT from an env file here because the file
+# that would set it has not been loaded yet.
+environment = os.environ.get("ENVIRONMENT", "local")
+env_file_path = Path(__file__).resolve().parents[3] / f".env.{environment}"
+if not env_file_path.exists():
+    raise FileNotFoundError(f"Missing env file: {env_file_path}")
+
+
 def parse_cors(v: Any) -> list[str] | str:
     if isinstance(v, str) and not v.startswith("["):
         return [i.strip() for i in v.split(",") if i.strip()]
@@ -24,8 +35,8 @@ def parse_cors(v: Any) -> list[str] | str:
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        # Use top level .env file (one level above ./backend/)
-        env_file="../.env",
+        # Use an environment-specific .env file from the repo root
+        env_file=str(env_file_path),
         env_ignore_empty=True,
         extra="ignore",
     )

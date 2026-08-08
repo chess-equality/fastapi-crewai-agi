@@ -5,7 +5,7 @@
 * Start the local stack with Docker Compose:
 
 ```bash
-docker compose watch
+./scripts/compose.sh watch
 ```
 
 * Now you can open your browser and interact with these URLs:
@@ -23,13 +23,13 @@ Traefik UI, to see how the routes are being handled by the proxy: <http://localh
 To check the logs, run (in another terminal):
 
 ```bash
-docker compose logs
+./scripts/compose.sh logs
 ```
 
 To check the logs of a specific service, add the name of the service, e.g.:
 
 ```bash
-docker compose logs backend
+./scripts/compose.sh logs backend
 ```
 
 ## Mailcatcher
@@ -61,7 +61,7 @@ bun run dev
 Or you could stop the `backend` Docker Compose service:
 
 ```bash
-docker compose stop backend
+./scripts/compose.sh stop backend
 ```
 
 And then you can run the local development server for the backend:
@@ -79,7 +79,7 @@ When you deploy it to production (or staging), the application uses one domain. 
 
 In the guide about [deployment](deployment.md) you can read about Traefik, the configured proxy. That's the component in charge of transmitting traffic to the application service based on the domain.
 
-If you want to test that it's all working locally, you can edit the local `.env` file, and change:
+If you want to test that it's all working locally, you can edit the local `.env.local` file, and change:
 
 ```dotenv
 DOMAIN=localhost.tiangolo.com
@@ -94,34 +94,32 @@ The domain `localhost.tiangolo.com` is a special domain that is configured (with
 After you update it, run again:
 
 ```bash
-docker compose watch
+./scripts/compose.sh watch
 ```
 
 When deploying, for example in production, the main Traefik is configured outside of the Docker Compose files. For local development, there's an included Traefik in `compose.override.yml`, just to let you test that the domain works as expected, for example with `localhost.tiangolo.com`.
 
 ## Docker Compose files and env vars
 
-There is a main `compose.yml` file with all the configurations that apply to the whole stack, it is used automatically by `docker compose`.
+There is a main `compose.yml` file with all the configurations that apply to the whole stack, it is used automatically by `./scripts/compose.sh`.
 
-And there's also a `compose.override.yml` with overrides for development, for example to mount the source code as a volume. It is used automatically by `docker compose` to apply overrides on top of `compose.yml`.
+And there's also a `compose.override.yml` with overrides for development, for example to mount the source code as a volume. It is used automatically by `./scripts/compose.sh` to apply overrides on top of `compose.yml`.
 
-These Docker Compose files use the `.env` file containing configurations to be injected as environment variables in the containers.
+These Docker Compose files use the active `.env.<ENVIRONMENT>` file (`.env.local` by default) containing configurations to be injected as environment variables in the containers.
 
-They also use some additional configurations taken from environment variables set in the scripts before calling the `docker compose` command.
+They also use some additional configurations taken from environment variables set in the scripts before calling the `./scripts/compose.sh` command.
 
 After changing variables, make sure you restart the stack:
 
 ```bash
-docker compose watch
+./scripts/compose.sh watch
 ```
 
-## The .env file
+## The env files
 
-The `.env` file is the one that contains all your configurations, generated keys and passwords, etc.
+The `.env.example` file is the reference template. For local development, copy it to `.env.local` and fill in your keys and generated secrets.
 
-Depending on your workflow, you could want to exclude it from Git, for example if your project is public. In that case, you would have to make sure to set up a way for your CI tools to obtain it while building or deploying your project.
-
-One way to do it could be to add each environment variable to your CI/CD system, and updating the `compose.yml` file to read that specific env var instead of reading the `.env` file.
+The active `.env.<ENVIRONMENT>` file (`.env.local` by default) is the one that contains all your configurations, generated keys and passwords, etc. Active env files are excluded from Git, so make sure your CI/CD system has a way to obtain the correct file while building or deploying your project.
 
 ## Pre-commits and code linting
 

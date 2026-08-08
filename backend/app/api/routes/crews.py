@@ -59,7 +59,7 @@ def flow_kickoff(flow_name: str, request: FlowKickoffRequest) -> dict:
     if not settings.OPENAI_API_KEY and not settings.ANTHROPIC_API_KEY:
         raise HTTPException(
             status_code=503,
-            detail="No LLM API key configured. Set OPENAI_API_KEY or ANTHROPIC_API_KEY in .env.",
+            detail="No LLM API key configured. Set OPENAI_API_KEY or ANTHROPIC_API_KEY in .env.local.",
         )
 
     kickoff = _FLOWS[flow_name]

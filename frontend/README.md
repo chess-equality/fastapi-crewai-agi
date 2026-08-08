@@ -37,7 +37,7 @@ Done, you have a frontend-less (api-only) app. 🤓
 
 If you want, you can also remove the `FRONTEND_HOST` environment variable from:
 
-* `.env`
+* `.env.local`
 
 But it would be only to clean them up, leaving them won't really have any effect either way.
 
@@ -72,9 +72,9 @@ Notice that everytime the backend changes (changing the OpenAPI schema), you sho
 
 ## Using a Remote API
 
-By default, the built frontend uses the same origin as the FastAPI app. If you want to use a remote API while running the Vite development server, you can set the environment variable `VITE_API_URL` to the URL of the remote API. For example, you can set it in the `frontend/.env` file:
+By default, the built frontend uses the same origin as the FastAPI app. If you want to use a remote API while running the Vite development server, you can set the environment variable `VITE_API_URL` to the URL of the remote API. For example, you can set it in the active root env file (`.env.local` by default):
 
-```env
+```dotenv
 VITE_API_URL=https://my-domain.example.com
 ```
 
@@ -96,7 +96,7 @@ The frontend code is structured as follows:
 The frontend includes initial end-to-end tests using Playwright. To run the tests, you need to have the Docker Compose stack running. Start the stack with the following command:
 
 ```bash
-docker compose up -d --wait backend
+./scripts/compose.sh up -d --wait backend
 ```
 
 Then, you can run the tests with the following command:
@@ -114,7 +114,7 @@ bunx playwright test --ui
 To stop and remove the Docker Compose stack and clean the data created in tests, use the following command:
 
 ```bash
-docker compose down -v
+./scripts/compose.sh down -v
 ```
 
 To update the tests, navigate to the tests directory and modify the existing test files or add new ones as needed.

@@ -12,7 +12,7 @@ services:
     volumes:
       - app-db-data:/var/lib/postgresql
     env_file:
-      - .env
+      - .env.${ENVIRONMENT:-local}
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD?Variable not set}
       - POSTGRES_USER=${POSTGRES_USER?Variable not set}
@@ -46,6 +46,8 @@ services:
     build:
       context: .
       dockerfile: backend/Dockerfile
+      args:
+        - ENVIRONMENT=${ENVIRONMENT:-local}
     networks:
       - traefik-public
       - default
@@ -55,7 +57,7 @@ services:
         restart: true
     command: bash scripts/prestart.sh
     env_file:
-      - .env
+      - .env.${ENVIRONMENT:-local}
     environment:
       - DOMAIN=${DOMAIN}
       - FRONTEND_HOST=${FRONTEND_HOST?Variable not set}
@@ -88,7 +90,7 @@ services:
       prestart:
         condition: service_completed_successfully
     env_file:
-      - .env
+      - .env.${ENVIRONMENT:-local}
     environment:
       - DOMAIN=${DOMAIN}
       - FRONTEND_HOST=${FRONTEND_HOST?Variable not set}
@@ -117,6 +119,8 @@ services:
     build:
       context: .
       dockerfile: backend/Dockerfile
+      args:
+        - ENVIRONMENT=${ENVIRONMENT:-local}
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public

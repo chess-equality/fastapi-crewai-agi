@@ -11,7 +11,11 @@ RUN bun install
 
 COPY ./frontend /app/frontend
 
+# Copy env files so Vite can load the one selected by ENVIRONMENT.
+COPY .env* /app/
+
 ARG VITE_API_URL=
+ARG ENVIRONMENT=local
 
 RUN bun run build
 

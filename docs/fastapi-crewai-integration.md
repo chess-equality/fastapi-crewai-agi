@@ -61,7 +61,7 @@ full-stack-fastapi-template/
 - Fork/clone and rename.
 - Or use `copier copy https://github.com/fastapi/full-stack-fastapi-template <dest> --trust`.
 - The `../copier.yml` file drives project personalization and a post-creation Python
-  script updates `../.env`.
+  script updates `../.env.local`.
 
 ## 3. CrewAI Project Scaffolding Overview
 
@@ -364,8 +364,8 @@ dependencies = [
 > placeholders. Use `uv add crewai crewai-tools` inside `../backend` to update
 > both `../pyproject.toml` and `../uv.lock`.
 
-Add LLM API keys to `../.env` (e.g. `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, etc.)
-and load them through `app/core/config.py` or a separate `../.env` file.
+Add LLM API keys to `../.env.local` (e.g. `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, etc.)
+and load them through `app/core/config.py` or a separate `../.env.local` file.
 
 ### 6.3 Generate the Initial CrewAI Scaffolding
 
@@ -449,7 +449,7 @@ Option 1 — Extend the existing `../copier.yml`:
 
 1. Copy the full-stack template into a new repository.
 2. Add CrewAI-specific files (`backend/app/crews/...`, `routes/crews.py`,
-   updated `../pyproject.toml`, `../.env` LLM keys).
+   updated `../pyproject.toml`, `../.env.local` LLM keys).
 3. Add new Copier questions for LLM provider, model, and API key.
 4. Add a `_tasks` entry that runs a script to initialize the first crew/flow
    after generation.
@@ -503,7 +503,7 @@ hosted in a Git repository.
 - **LLM provider configuration**: API keys must be injected via environment
   variables, not committed to the repository.  
   **Status: Resolved in code, open for user secret management.**
-  `OPENAI_API_KEY`, `OPENAI_MODEL`, and `ANTHROPIC_API_KEY` are loaded from `../.env`
+  `OPENAI_API_KEY`, `OPENAI_MODEL`, and `ANTHROPIC_API_KEY` are loaded from `../.env.local`
   via `../backend/app/core/config.py`. The keys are not committed. A real key must
   still be supplied by the user.
 - **CrewAI AMP vs self-hosted**: If the team already uses AMP, Option C may be
@@ -527,7 +527,7 @@ The following was implemented in `fastapi-crewai`:
 - Generated a CrewAI flow with `crewai create flow demo_flow --skip_provider` and merged the resulting `src/demo_flow/` package into `../backend/app/crews/demo_flow`.
 - Refactored the FastAPI route in `../backend/app/api/routes/crews.py` to auto-discover any flow package under `../backend/app/crews` that exposes a top-level `kickoff` callable. The endpoint is `POST /api/v1/crews/{flow_name}/kickoff`.
 - Wired the route into `../backend/app/api/main.py`.
-- Added `OPENAI_API_KEY`, `OPENAI_MODEL`, and `ANTHROPIC_API_KEY` to `../backend/app/core/config.py` and `../.env`.
+- Added `OPENAI_API_KEY`, `OPENAI_MODEL`, and `ANTHROPIC_API_KEY` to `../backend/app/core/config.py` and `../.env.local`.
 - Fixed Python 3.12 compatibility issues: parenthesized `except` in `../backend/app/api/deps.py`, and `from __future__ import annotations` in `../backend/app/models.py`.
 - Guarded `app.frontend` mounting in `../backend/app/main.py` so local dev starts without a built frontend.
 - Removed `print` statements from `../backend/app/crews/demo_flow/main.py` and fixed the `crewai_trigger_payload` type to `dict | None`.
@@ -544,7 +544,7 @@ The generic `crews` router means you can add new CrewAI flows without touching F
 ```bash
 git clone <this-repo> new-project
 cd new-project
-# 1. Update .env with your Postgres, secret, and LLM credentials.
+# 1. Update .env.local with your Postgres, secret, and LLM credentials.
 # 2. (Optional) Replace or extend backend/app/crews/ with newly generated flows.
 ```
 

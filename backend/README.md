@@ -46,7 +46,7 @@ For example, the directory with the backend code is synchronized in the Docker c
 There is also a command override that runs `fastapi run --reload` instead of the default `fastapi run`. It starts a single server process (instead of multiple, as would be for production) and reloads the process whenever the code changes. Have in mind that if you have a syntax error and save the Python file, it will break and exit, and the container will stop. After that, you can restart the container by fixing the error and running again:
 
 ```console
-$ docker compose watch
+$ ./scripts/compose.sh watch
 ```
 
 There is also a commented out `command` override, you can uncomment it and comment the default one. It makes the backend container run a process that does "nothing", but keeps the container alive. That allows you to get inside your running container and execute commands inside, for example a Python interpreter to test installed dependencies, or start the development server that reloads when it detects changes.
@@ -54,13 +54,13 @@ There is also a commented out `command` override, you can uncomment it and comme
 To get inside the container with a `bash` session you can start the stack with:
 
 ```console
-$ docker compose watch
+$ ./scripts/compose.sh watch
 ```
 
 and then in another terminal, `exec` inside the running container:
 
 ```console
-$ docker compose exec backend bash
+$ ./scripts/compose.sh exec backend bash
 ```
 
 You should see an output like:
@@ -106,7 +106,7 @@ If you use GitHub Actions the tests will run automatically.
 If your stack is already up and you just want to run the tests, you can use:
 
 ```bash
-docker compose exec backend bash scripts/tests-start.sh
+./scripts/compose.sh exec backend bash scripts/tests-start.sh
 ```
 
 That `/app/scripts/tests-start.sh` script just calls `pytest` after making sure that the rest of the stack is running. If you need to pass extra arguments to `pytest`, you can pass them to that command and they will be forwarded.
@@ -114,7 +114,7 @@ That `/app/scripts/tests-start.sh` script just calls `pytest` after making sure 
 For example, to stop on first error:
 
 ```bash
-docker compose exec backend bash scripts/tests-start.sh -x
+./scripts/compose.sh exec backend bash scripts/tests-start.sh -x
 ```
 
 ### Test Coverage
@@ -130,7 +130,7 @@ Make sure you create a "revision" of your models and that you "upgrade" your dat
 * Start an interactive session in the backend container:
 
 ```console
-$ docker compose exec backend bash
+$ ./scripts/compose.sh exec backend bash
 ```
 
 * Alembic is already configured to import your SQLModel models from `./backend/app/models.py`.

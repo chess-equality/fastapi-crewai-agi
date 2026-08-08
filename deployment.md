@@ -122,7 +122,7 @@ You need to set some environment variables first.
 
 ### Generate secret keys
 
-Some environment variables in the `.env` file have a default value of `changethis`.
+Some environment variables in the active `.env` file (`.env.local` by default) have a default value of `changethis`.
 
 You have to change them with a secret key, to generate secret keys you can run the following command:
 

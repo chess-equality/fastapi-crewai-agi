@@ -1,62 +1,62 @@
 project_name:
   type: str
-  help: The name of the project, shown to API users (in .env)
+  help: The name of the project, shown to API users (in .env.local)
   default: FastAPI Project
 
 stack_name:
   type: str
-  help: The name of the stack used for Docker Compose labels (no spaces) (in .env)
+  help: The name of the stack used for Docker Compose labels (no spaces) (in .env.local)
   default: fastapi-project
 
 secret_key:
   type: str
   help: |
     'The secret key for the project, used for security,
-    stored in .env, you can generate one with:
+    stored in .env.local, you can generate one with:
     python -c "import secrets; print(secrets.token_urlsafe(32))"'
   default: changethis
 
 first_superuser:
   type: str
-  help: The email of the first superuser (in .env)
+  help: The email of the first superuser (in .env.local)
   default: admin@example.com
 
 first_superuser_password:
   type: str
-  help: The password of the first superuser (in .env)
+  help: The password of the first superuser (in .env.local)
   default: changethis
 
 smtp_host:
   type: str
-  help: The SMTP server host to send emails, you can set it later in .env
+  help: The SMTP server host to send emails, you can set it later in .env.local
   default: ""
 
 smtp_user:
   type: str
-  help: The SMTP server user to send emails, you can set it later in .env
+  help: The SMTP server user to send emails, you can set it later in .env.local
   default: ""
 
 smtp_password:
   type: str
-  help: The SMTP server password to send emails, you can set it later in .env
+  help: The SMTP server password to send emails, you can set it later in .env.local
   default: ""
 
 emails_from_email:
   type: str
-  help: The email account to send emails from, you can set it later in .env
+  help: The email account to send emails from, you can set it later in .env.local
   default: info@example.com
 
 postgres_password:
   type: str
   help: |
-    'The password for the PostgreSQL database, stored in .env,
+    'The password for the PostgreSQL database, stored in .env.local,
     you can generate one with:
     python -c "import secrets; print(secrets.token_urlsafe(32))"'
   default: changethis
 
 sentry_dsn:
   type: str
-  help: The DSN for Sentry, if you are using it, you can set it later in .env
+  help: The DSN for Sentry, if you are using it, you can set it later in .env.local
   default: ""
 
 _exclude:
