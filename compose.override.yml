@@ -5,7 +5,7 @@ services:
   # etc. To enable it, update .env, set:
   # DOMAIN=localhost.tiangolo.com
   proxy:
-    image: traefik:3.6
+    image: traefik:3.7.10
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
@@ -94,7 +94,7 @@ services:
       EMAILS_FROM_EMAIL: "noreply@example.com"
 
   mailcatcher:
-    image: schickling/mailcatcher
+    image: sj26/mailcatcher:v0.10.0
     ports:
       - "1080:1080"
       - "1025:1025"

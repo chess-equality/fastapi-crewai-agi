@@ -1,4 +1,4 @@
-FROM oven/bun:1 AS frontend-build
+FROM oven/bun:1.3.14 AS frontend-build
 
 WORKDIR /app
 
@@ -16,13 +16,13 @@ ARG VITE_API_URL=
 RUN bun run build
 
 
-FROM python:3.12
+FROM python:3.12.13
 
 ENV PYTHONUNBUFFERED=1
 
 # Install uv
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#installing-uv
-COPY --from=ghcr.io/astral-sh/uv:0.9.26 /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.12.3 /uv /uvx /bin/
 
 # Compile bytecode
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#compiling-bytecode
