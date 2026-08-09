@@ -1,6 +1,7 @@
 import importlib
 from collections.abc import Callable
 from pathlib import Path
+from typing import Any
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
@@ -11,18 +12,22 @@ router = APIRouter(prefix="/crews", tags=["crews"])
 
 
 class FlowKickoffRequest(BaseModel):
-    inputs: dict = {}
+    inputs: dict[str, Any] = {}
 
 
-def _discover_flows() -> dict[str, Callable[[dict | None], object]]:
+def _discover_flows() -> dict[str, Callable[[dict[str, Any] | None], object]]:
     """Discover all flow packages under app/crews and import their kickoff entry points."""
     crews_dir = Path(__file__).resolve().parents[2] / "crews"
-    flows: dict[str, Callable[[dict | None], object]] = {}
+    flows: dict[str, Callable[[dict[str, Any] | None], object]] = {}
     if not crews_dir.exists():
         return flows
 
     for entry in crews_dir.iterdir():
-        if entry.is_dir() and (entry / "__init__.py").exists() and (entry / "main.py").exists():
+        if (
+            entry.is_dir()
+            and (entry / "__init__.py").exists()
+            and (entry / "main.py").exists()
+        ):
             module_name = f"app.crews.{entry.name}.main"
             try:
                 module = importlib.import_module(module_name)
@@ -48,7 +53,7 @@ def _serialize_crew_result(result: object) -> str:
 
 
 @router.post("/{flow_name}/kickoff")
-def flow_kickoff(flow_name: str, request: FlowKickoffRequest) -> dict:
+def flow_kickoff(flow_name: str, request: FlowKickoffRequest) -> dict[str, Any]:
     """Run a discovered CrewAI flow by name."""
     if flow_name not in _FLOWS:
         raise HTTPException(
@@ -71,4 +76,8 @@ def flow_kickoff(flow_name: str, request: FlowKickoffRequest) -> dict:
             status_code=500, detail=f"Crew execution failed: {exc}"
         ) from exc
 
-    return {"flow": flow_name, "inputs": request.inputs, "result": _serialize_crew_result(result)}
+    return {
+        "flow": flow_name,
+        "inputs": request.inputs,
+        "result": _serialize_crew_result(result),
+    }

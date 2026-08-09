@@ -1,7 +1,8 @@
+import tomllib
 from pathlib import Path
+from typing import Any
 
 import sentry_sdk
-import tomllib
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from starlette.middleware.cors import CORSMiddleware
@@ -16,8 +17,9 @@ def get_version() -> str:
     pyproject_path = Path(__file__).resolve().parents[1] / "pyproject.toml"
     if pyproject_path.exists():
         with pyproject_path.open("rb") as f:
-            data = tomllib.load(f)
-            return data.get("project", {}).get("version", "0.1.0")
+            data: dict[str, Any] = tomllib.load(f)
+        project: dict[str, Any] = data.get("project", {})
+        return str(project.get("version", "0.1.0"))
     return "0.1.0"
 
 

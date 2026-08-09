@@ -26,7 +26,9 @@ def render_email_template(*, template_name: str, context: dict[str, Any]) -> str
     template_str = (
         Path(__file__).parent / "email-templates" / "build" / template_name
     ).read_text()
-    html_content = Template(template_str).render(context)
+    # jinja2's `Template.render()` is annotated `-> str`, but mypy still infers `Any`
+    # here; wrap explicitly so this function's own `-> str` contract holds under mypy.
+    html_content = str(Template(template_str).render(context))
     return html_content
 
 

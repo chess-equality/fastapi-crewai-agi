@@ -15,7 +15,6 @@ from pydantic import (
 )
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-
 # Select the active env file from the shell, defaulting to local.
 # We can't read ENVIRONMENT from an env file here because the file
 # that would set it has not been loaded yet.
@@ -131,4 +130,4 @@ class Settings(BaseSettings):
         return self
 
 
-settings = Settings()  # type: ignore
+settings = Settings()  # type: ignore[call-arg]
