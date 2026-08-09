@@ -1,6 +1,7 @@
 services:
 
   db:
+    container_name: fca_db
     image: postgres:18.4
     restart: always
     healthcheck:
@@ -19,6 +20,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB?Variable not set}
 
   adminer:
+    container_name: fca_adminer
     image: adminer:5.5.0
     restart: always
     networks:
@@ -42,6 +44,7 @@ services:
       - traefik.http.services.${STACK_NAME?Variable not set}-adminer.loadbalancer.server.port=8080
 
   prestart:
+    container_name: fca_prestart
     image: '${DOCKER_IMAGE_BACKEND?Variable not set}:${TAG-latest}'
     build:
       context: .
@@ -78,6 +81,7 @@ services:
       - SENTRY_DSN=${SENTRY_DSN}
 
   backend:
+    container_name: fca_backend
     image: '${DOCKER_IMAGE_BACKEND?Variable not set}:${TAG-latest}'
     restart: always
     networks:

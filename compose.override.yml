@@ -5,6 +5,7 @@ services:
   # etc. To enable it, update .env.local, set:
   # DOMAIN=localhost.tiangolo.com
   proxy:
+    container_name: fca_proxy
     image: traefik:3.7.10
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -45,16 +46,19 @@ services:
       - default
 
   db:
+    container_name: fca_db
     restart: "no"
     ports:
       - "5432:5432"
 
   adminer:
+    container_name: fca_adminer
     restart: "no"
     ports:
       - "8080:8080"
 
   backend:
+    container_name: fca_backend
     restart: "no"
     ports:
       - "8000:8000"
@@ -94,12 +98,14 @@ services:
       EMAILS_FROM_EMAIL: "noreply@example.com"
 
   mailcatcher:
+    container_name: fca_mailcatcher
     image: sj26/mailcatcher:v0.10.0
     ports:
       - "1080:1080"
       - "1025:1025"
 
   playwright:
+    container_name: fca_playwright
     build:
       context: .
       dockerfile: frontend/Dockerfile.playwright
