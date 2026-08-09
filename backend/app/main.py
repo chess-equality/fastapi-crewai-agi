@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import sentry_sdk
+import tomllib
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from starlette.middleware.cors import CORSMiddleware
@@ -9,6 +10,15 @@ from app.api.main import api_router
 from app.core.config import settings
 
 FRONTEND_DIR = Path(__file__).parent / "frontend"
+
+
+def get_version() -> str:
+    pyproject_path = Path(__file__).resolve().parents[1] / "pyproject.toml"
+    if pyproject_path.exists():
+        with pyproject_path.open("rb") as f:
+            data = tomllib.load(f)
+            return data.get("project", {}).get("version", "0.1.0")
+    return "0.1.0"
 
 
 def custom_generate_unique_id(route: APIRoute) -> str:
@@ -20,6 +30,7 @@ if settings.SENTRY_DSN and settings.ENVIRONMENT != "local":
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
+    version=get_version(),
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     generate_unique_id_function=custom_generate_unique_id,
 )
