@@ -42,6 +42,7 @@ Thumbs.db
 # Agent configuration
 .agents/
 .claude/
+.devin/
 AGENTS.md
 
 # Lock file (regenerate with `uv lock`)
