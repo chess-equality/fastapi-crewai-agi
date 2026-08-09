@@ -1,5 +1,5 @@
 {
-  "name": "fastapi-full-stack-template",
+  "name": "fastapi-crewai-agi",
   "private": true,
   "workspaces": [
     "frontend"
