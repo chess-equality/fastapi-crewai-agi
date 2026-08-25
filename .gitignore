@@ -5,6 +5,7 @@
 .venv/
 backend/.venv
 node_modules/
+.github/context-mode/
 
 # Python
 __pycache__/
