@@ -6,7 +6,7 @@ services:
   # DOMAIN=localhost.tiangolo.com
   proxy:
     container_name: fca_proxy
-    image: traefik:3.7.10
+    image: traefik:v3.7.12
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
