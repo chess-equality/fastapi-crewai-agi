@@ -1,4 +1,4 @@
-FROM oven/bun:1.3.14 AS frontend-build
+FROM oven/bun:1.4.0 AS frontend-build
 
 WORKDIR /app
 
@@ -20,7 +20,7 @@ ARG ENVIRONMENT=local
 RUN bun run build
 
 
-FROM python:3.12.13
+FROM python:3.14.7
 
 ENV PYTHONUNBUFFERED=1
 
