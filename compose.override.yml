@@ -6,7 +6,7 @@ services:
   # DOMAIN=localhost.tiangolo.com
   proxy:
     container_name: fca_proxy
-    image: traefik:3.7.10
+    image: traefik:v3.7.13
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
@@ -99,7 +99,7 @@ services:
 
   mailcatcher:
     container_name: fca_mailcatcher
-    image: sj26/mailcatcher:v0.10.0
+    image: sj26/mailcatcher:v0.11.0
     ports:
       - "1080:1080"
       - "1025:1025"

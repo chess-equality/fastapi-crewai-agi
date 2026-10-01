@@ -21,7 +21,7 @@ services:
 
   adminer:
     container_name: fca_adminer
-    image: adminer:5.5.0
+    image: adminer:6.0.1
     restart: always
     networks:
       - traefik-public
